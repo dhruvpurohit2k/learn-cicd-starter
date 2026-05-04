@@ -1,4 +1,4 @@
-![dynamic badge of test status](https://github.com/dhruvpurohit2k/actions/workflows/ci.yml/badge.svg)
+![dynamic badge of test status](https://github.com/dhruvpurohit2k/learn-cicd-starter/actions/workflows/ci.yml/badge.svg)
 
 # learn-cicd-starter (Notely)
 
