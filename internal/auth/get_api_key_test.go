@@ -18,7 +18,7 @@ func TestGetApiKey(t *testing.T) {
 		},
 		"Missing Key": {
 			got:  http.Header{},
-			want: "1234",
+			want: "",
 		},
 	}
 
