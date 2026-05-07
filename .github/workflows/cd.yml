@@ -1,0 +1,13 @@
+name: cd
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+  steps:
+    - name: Build Image
+      run: ./scripts/buildprod.sh
