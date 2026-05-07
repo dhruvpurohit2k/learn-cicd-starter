@@ -1,20 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Notely</title>
 </head>
 
 <body class="section">
-    <h1>Notely</h1>
+    <h1>Welcome to Notely</h1>
 
     <div id="userCreationContainer" class="section">
-        <input id="nameField" type="text" placeholder="Enter your name">
+        <input id="nameField" type="text" placeholder="Enter your name" />
         <button id="createUserButton" onclick="createUser()">Create User</button>
     </div>
 
-    <div id="noteSection" class="section" style="display: none;">
+    <div id="noteSection" class="section" style="display: none">
         <p id="greetingMessage"></p>
 
         <textarea id="newNoteContent"></textarea>
@@ -27,27 +27,32 @@
     </div>
 
     <script>
-        const API_BASE = '/v1';
+        const API_BASE = "/v1";
         let currentUserAPIKey = null;
         let currentUser = null;
 
         async function createNote() {
             if (!currentUser) {
-                alert('Please create a user first');
+                alert("Please create a user first");
                 return;
             }
-            const noteContent = document.getElementById('newNoteContent').value;
-            const response = await fetchWithAlert(`${API_BASE}/notes`,
-                {
-                    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `ApiKey ${currentUserAPIKey}` },
-                    body: JSON.stringify({ note: noteContent })
-                });
+            const noteContent = document.getElementById("newNoteContent").value;
+            const response = await fetchWithAlert(`${API_BASE}/notes`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `ApiKey ${currentUserAPIKey}`,
+                },
+                body: JSON.stringify({note: noteContent}),
+            });
             const note = await response.json();
             displayNote(note);
         }
 
         async function getUser() {
-            const response = await fetchWithAlert(`${API_BASE}/users`, { headers: { 'Authorization': `ApiKey ${currentUserAPIKey}` } });
+            const response = await fetchWithAlert(`${API_BASE}/users`, {
+                headers: {Authorization: `ApiKey ${currentUserAPIKey}`},
+            });
             return await response.json();
         }
 
@@ -55,48 +60,51 @@
             if (!currentUser) {
                 return;
             }
-            const response = await fetchWithAlert(`${API_BASE}/notes`, { headers: { 'Authorization': `ApiKey ${currentUserAPIKey}` } });
+            const response = await fetchWithAlert(`${API_BASE}/notes`, {
+                headers: {Authorization: `ApiKey ${currentUserAPIKey}`},
+            });
             const notes = await response.json();
-            const notesContainer = document.getElementById('notes');
-            notesContainer.innerHTML = '';
-            notes.forEach(note => displayNote(note));
+            const notesContainer = document.getElementById("notes");
+            notesContainer.innerHTML = "";
+            notes.forEach((note) => displayNote(note));
         }
 
         function displayNote(note) {
-            const noteElement = document.createElement('div');
-            noteElement.className = 'note';
+            const noteElement = document.createElement("div");
+            noteElement.className = "note";
             noteElement.textContent = note.note;
-            document.getElementById('notes').appendChild(noteElement);
+            document.getElementById("notes").appendChild(noteElement);
         }
 
         async function createUser() {
-            const nameField = document.getElementById('nameField');
+            const nameField = document.getElementById("nameField");
             const response = await fetchWithAlert(`${API_BASE}/users`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: nameField.value }) // using the value from nameField
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({name: nameField.value}), // using the value from nameField
             });
             const user = await response.json();
-            localStorage.setItem('currentUserAPIKey', user.api_key);
-            login()
+            localStorage.setItem("currentUserAPIKey", user.api_key);
+            login();
             alert(`User Created: ${user.name}`);
 
             // Once a user is created, hide the user creation section and show the note section
-            document.getElementById('userCreationContainer').style.display = 'none';
-            document.getElementById('noteSection').style.display = 'flex';
+            document.getElementById("userCreationContainer").style.display = "none";
+            document.getElementById("noteSection").style.display = "flex";
         }
 
         function logout() {
-            localStorage.removeItem('currentUserAPIKey');
+            localStorage.removeItem("currentUserAPIKey");
             currentUser = null;
 
             // When a user logs out, show the user creation section and hide the note section
-            document.getElementById('userCreationContainer').style.display = 'block';
-            document.getElementById('noteSection').style.display = 'none';
+            document.getElementById("userCreationContainer").style.display =
+                "block";
+            document.getElementById("noteSection").style.display = "none";
         }
 
         async function login() {
-            currentUserAPIKey = localStorage.getItem('currentUserAPIKey')
+            currentUserAPIKey = localStorage.getItem("currentUserAPIKey");
             if (!currentUserAPIKey) {
                 return;
             }
@@ -106,11 +114,12 @@
             await loadNotes();
 
             // When a user logs in, hide the user creation section and show the note section
-            document.getElementById('userCreationContainer').style.display = 'none';
-            document.getElementById('noteSection').style.display = 'flex';
+            document.getElementById("userCreationContainer").style.display = "none";
+            document.getElementById("noteSection").style.display = "flex";
 
             // Display a greeting message
-            document.getElementById('greetingMessage').textContent = `Hello ${user.name}!`;
+            document.getElementById("greetingMessage").textContent =
+                `Hello ${user.name}!`;
         }
 
         async function fetchWithAlert(url, options) {
@@ -130,12 +139,23 @@
             --primary: hsl(235, 86%, 65%);
             --primary-light: hsl(235, 88%, 73%);
             --dark: #121212;
-            --light: #E4E4E4;
+            --light: #e4e4e4;
             --grey: #424242;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family:
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Oxygen,
+                Ubuntu,
+                Cantarell,
+                "Open Sans",
+                "Helvetica Neue",
+                sans-serif;
             background-color: var(--dark);
             color: var(--light);
             margin: 0;
